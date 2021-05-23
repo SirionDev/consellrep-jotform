@@ -1,4 +1,4 @@
-# Jotform - Identitat Digital Republiana
+# Jotform - Identitat Digital Republicana
 
 ### Valida la Identitat Digital Republicana de l'usuari a un formulari de Jotform
 
