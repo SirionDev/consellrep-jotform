@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jotfor.ms/css/styles/form.css?52ecf13bd">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jotfor.ms/css/styles/nova.css?52ecf13bd">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jotfor.ms/css/styles/buttons.css?52ecf13bd">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jotfor.ms/themes/CSS/defaultV2.css?52ecf13bd">
+        <style>
+            body {
+                margin: 3px;
+            }
+        </style>
+    </head>
+    <body>
+        <input type="text" id="idrepublicana" class="form-textbox" data-component="textbox">
+
+        <script type="text/javascript">
+            JFCustomWidget.subscribe("ready", function(){
+                JFCustomWidget.subscribe("submit", function() {
+                    JFCustomWidget.sendSubmit(validateIDR());
+                });
+            });
+
+            function validateIDR() {
+                let idrepublicana = document.getElementById('idrepublicana').value
+                let pattern = /[A-Za-z]{1}\-[0-9]{3}\-[0-9]{5}/;
+
+                if (pattern.test(idrepublicana)) {
+                    let xmlHttp = new XMLHttpRequest();
+                    xmlHttp.open("GET", "https://apis.consellrepublica.cat/idserv/validate?idCiutada=" + idrepublicana, false);
+                    xmlHttp.send(null);
+                    let response = JSON.parse(xmlHttp.responseText);
+                    return buildMessage(idrepublicana, response.state == "VALID_ACTIVE")
+                }
+                return buildMessage(idrepublicana, idrepublicana == "")
+            }
+
+            function buildMessage(idrepublicana, valid) {
+                return {
+                    valid: valid,
+                    value: idrepublicana == "" ? "No" : idrepublicana
+                }
+            }
+        </script>
+    </body>
+</html>
